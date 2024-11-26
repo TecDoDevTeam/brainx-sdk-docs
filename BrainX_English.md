@@ -4,21 +4,22 @@
 
 
 ### Update Log
-| Date | Version | Log |
-|--|--|--|
+| Date       | Version | Log |
+|------------|---------|--|
 | 2024-07-24 | 1.0.0.1 | 1、Support for Banner and Splash. |
 | 2024-08-30 | 2.0.0.1 | 1、Support for RewardVideo and Interstitial. |
 | 2024-09-19 | 2.0.0.2 | 1、Display optimisation, known issues fixed. |
 | 2024-10-23 | 2.0.0.3 | 1、Network optimisation, known issues fixed. |
 | 2024-11-07 | 2.0.0.4 | 1、Fill rate optimisation, known issues fixed. |
 | 2024-11-15 | 2.0.1.0 | 1、Support for Native, fill rate optimisation, known issues fixed. |
+| 2024-11-26 | 2.0.1.1 | 1、Fill rate optimisation, known issues fixed. |
 
 ## Integration
 
 ### Add SDK Implementation
 
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-	//For example: implementation 'tech.brainx.sdk:brainxsdk:2.0.1.0'
+	//For example: implementation 'tech.brainx.sdk:brainxsdk:2.0.1.1'
 
 ### Add SDK-dependent permission declaration
 

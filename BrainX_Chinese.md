@@ -3,21 +3,22 @@
 
 
 ### 更新日志
-| 日期 | 版本 | 日志 |
-|--|--|--|
+| 日期         | 版本      | 日志 |
+|------------|---------|--|
 | 2024-07-24 | 1.0.0.1 | 1、Banner、Splash支持。 |
 | 2024-08-30 | 2.0.0.1 | 1、RewardVideo、Interstitial支持。 |
 | 2024-09-19 | 2.0.0.2 | 1、展示效果优化，已知问题修复。 |
 | 2024-10-23 | 2.0.0.3 | 1、网络请求优化，已知问题修复。 |
 | 2024-11-07 | 2.0.0.4 | 1、优化填充效果，已知问题修复。 |
 | 2024-11-15 | 2.0.1.0 | 1、Native广告支持，优化填充效果，修复已知问题。 |
+| 2024-11-26 | 2.0.1.1 | 1、优化填充效果，修复已知问题。 |
 
 ## 接入方式
 
 ### 添加SDK依赖库
 	
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.0.1.0'
+	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.0.1.1'
 
 ### 在AndroidManifest.xml中添加SDK依赖的权限申明
 
