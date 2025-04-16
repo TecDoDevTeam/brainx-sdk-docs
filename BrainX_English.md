@@ -195,11 +195,13 @@ Call the getAdView() method of the TDSplash instance to obtain the ad View, and 
 |void onAdLoaded(TDBanner tdBanner)| The ad request is successful and the TDBanner instance is returned |
 |void onError(TDError tdError)| The ad request fails and returns a TDError instance. |
 
-|TDBanner|Description|
-|---|---|
-|View getAdView()| Get the AdView for display |
-|void setEventListener(eventListener: TDBannerEventListener)| Set event listener for the Ad |
-|double getBidPrice() | Get the price of the Ad |
+|TDBanner| Description                          |
+|---|--------------------------------------|
+|View getAdView()| Get the AdView for display           |
+|void setEventListener(eventListener: TDBannerEventListener)| Set event listener for the Ad        |
+|double getBidPrice() | Get the price of the Ad              |
+|double getAdWidth() | Get the width of the Ad              |
+|double getAdHeight() | Get the height of the Ad             |
 |void destroy() | Destroy the Ad and recycle resources |
 
 #### 3. Register Ad Event Callback

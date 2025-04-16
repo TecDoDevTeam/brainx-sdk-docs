@@ -196,12 +196,14 @@
 |void onError(TDError tdError)| 广告请求失败，返回TDError实例 |
 
 
-|TDBanner|描述|
-|---|---|
+|TDBanner| 描述           |
+|---|--------------|
 |View getAdView()| 获取用于展示的AdView |
-|void setEventListener(eventListener: TDBannerEventListener)| 设置广告事件监听 |
-|double getBidPrice() | 获取广告价格 |
-|void destroy() | 销毁广告，回收广告资源 |
+|void setEventListener(eventListener: TDBannerEventListener)| 设置广告事件监听     |
+|double getBidPrice() | 获取广告价格       |
+|double getAdWidth() | 获取广告宽度       |
+|double getAdHeight() | 获取广告高度       |
+|void destroy() | 销毁广告，回收广告资源  |
 
 
 #### 3、设置事件监听
