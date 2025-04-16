@@ -3,22 +3,23 @@
 
 
 ### 更新日志
-| 日期         | 版本      | 日志 |
-|------------|---------|--|
-| 2024-07-24 | 1.0.0.1 | 1、Banner、Splash支持。 |
+| 日期         | 版本      | 日志                            |
+|------------|---------|-------------------------------|
+| 2024-07-24 | 1.0.0.1 | 1、Banner、Splash支持。            |
 | 2024-08-30 | 2.0.0.1 | 1、RewardVideo、Interstitial支持。 |
-| 2024-09-19 | 2.0.0.2 | 1、展示效果优化，已知问题修复。 |
-| 2024-10-23 | 2.0.0.3 | 1、网络请求优化，已知问题修复。 |
-| 2024-11-07 | 2.0.0.4 | 1、优化填充效果，已知问题修复。 |
-| 2024-11-15 | 2.0.1.0 | 1、Native广告支持，优化填充效果，修复已知问题。 |
-| 2024-11-26 | 2.0.1.1 | 1、优化填充效果，修复已知问题。 |
+| 2024-09-19 | 2.0.0.2 | 1、展示效果优化，已知问题修复。              |
+| 2024-10-23 | 2.0.0.3 | 1、网络请求优化，已知问题修复。              |
+| 2024-11-07 | 2.0.0.4 | 1、优化填充效果，已知问题修复。              |
+| 2024-11-15 | 2.0.1.0 | 1、Native广告支持，优化填充效果，修复已知问题。   |
+| 2024-11-26 | 2.0.1.1 | 1、优化填充效果，修复已知问题。              |
+| 2025-04-15 | 2.0.1.2 | 1、Banner接入接口优化。               |
 
 ## 接入方式
 
 ### 添加SDK依赖库
 	
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.0.1.1'
+	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.0.1.2'
 
 ### 在AndroidManifest.xml中添加SDK依赖的权限申明
 
@@ -166,22 +167,12 @@
 
 #### 1、创建TDBannerConfig对象
 
-	TDBannerConfig tdBannerConfig = new TDBannerConfig(TDBannerConfig.BannerSize.W_320_H_50);
+	TDBannerConfig tdBannerConfig = new TDBannerConfig();
 	tdBannerConfig.setAdTimeOut(5);
-
-|TDBannerConfig.BannerSize|描述|
-|---|---|
-|W_320_H_50| AdView尺寸 320 * 50 |
-|W_300_H_250| AdView尺寸 300 * 250 |
-|W_320_H_90| AdView尺寸 320 * 90 |
-|W_728_H_90| AdView尺寸 728 * 90 |
-|W_800_H_600| AdView尺寸 800 * 600 |
 
 |TDBannerConfig|描述|
 |---|---|
 |void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为3s，默认为3秒 |
-
-**注意**：广告素材的尺寸 **只由创建广告位时选择的尺寸** 决定。此处传入的BannerSize只用于为AdView预设一个宽高，为了保证最佳的展示效果，此处传入的BannerSize需要与 **创建广告位时选择的尺寸** 保持一致。当然，你也可以在获取AdView之后自行为AdView设置宽高。
 
 #### 2、请求广告
 
@@ -611,10 +602,10 @@ BrainX会收集设备信息、GAID并上报这些数据，用于确定用户ID�
 
 ## 聚合平台支持
 
-|平台名称|支持广告|Network Adapter 版本|依赖|
-|---|---|---|---|
-|TradPlus|Splash、Banner、RewardVideo、Inter|1001|implementation 'tech.brainx.sdk:network-tradplus:1.0.0.1'|
-|Topon|Splash、Banner、RewardVideo、Inter|1001|implementation 'tech.brainx.sdk:network-topon:1.0.0.1'|
-|IronSource|Banner、RewardVideo、Inter|1001|implementation 'tech.brainx.sdk:network-ironsource:1.0.0.1'|
-|Max|Banner、RewardVideo、Inter|1001|implementation 'tech.brainx.sdk:network-max:1.0.0.1'|
-|Admob|Banner、RewardVideo、Inter|1001|implementation 'tech.brainx.sdk:network-admob:1.0.0.1'|
+|平台名称|支持广告| Network Adapter 版本 | 依赖                                                          |
+|---|---|--------------------|-------------------------------------------------------------|
+|TradPlus|Splash、Banner、RewardVideo、Inter| 1002               | implementation 'tech.brainx.sdk:network-tradplus:1.0.0.2'   |
+|Topon|Splash、Banner、RewardVideo、Inter| 1001               | implementation 'tech.brainx.sdk:network-topon:1.0.0.1'      |
+|IronSource|Banner、RewardVideo、Inter| 1001               | implementation 'tech.brainx.sdk:network-ironsource:1.0.0.1' |
+|Max|Banner、RewardVideo、Inter| 1001               | implementation 'tech.brainx.sdk:network-max:1.0.0.1'        |
+|Admob|Banner、RewardVideo、Inter| 1001               | implementation 'tech.brainx.sdk:network-admob:1.0.0.1'      |

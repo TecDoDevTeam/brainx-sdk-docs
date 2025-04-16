@@ -13,13 +13,14 @@
 | 2024-11-07 | 2.0.0.4 | 1、Fill rate optimisation, known issues fixed. |
 | 2024-11-15 | 2.0.1.0 | 1、Support for Native, fill rate optimisation, known issues fixed. |
 | 2024-11-26 | 2.0.1.1 | 1、Fill rate optimisation, known issues fixed. |
+| 2025-04-15 | 2.0.1.2 | 1、Banner interface optimization. |
 
 ## Integration
 
 ### Add SDK Implementation
 
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-	//For example: implementation 'tech.brainx.sdk:brainxsdk:2.0.1.1'
+	//For example: implementation 'tech.brainx.sdk:brainxsdk:2.0.1.2'
 
 ### Add SDK-dependent permission declaration
 
@@ -166,22 +167,12 @@ Call the getAdView() method of the TDSplash instance to obtain the ad View, and 
 
 #### 1. Create object of TDBannerConfig
 
-	TDBannerConfig tdBannerConfig = new TDBannerConfig(TDBannerConfig.BannerSize.W_320_H_50);
+	TDBannerConfig tdBannerConfig = new TDBannerConfig();
 	tdBannerConfig.setAdTimeOut(5);
-
-|TDBannerConfig.BannerSize|Description|
-|---|---|
-|W_320_H_50| 320 * 50 |
-|W_300_H_250| 300 * 250 |
-|W_320_H_90| 320 * 90 |
-|W_728_H_90| 728 * 90 |
-|W_800_H_600| 800 * 600 |
 
 |TDBannerConfig|Description|
 |---|---|
 |void setAdTimeOut(int seconds)| Set the ad request timeout, at least 3 seconds |
-
-**Note**：The size of the ad creative is determined only by the size selected when creating the ad slot. To ensure the best display effect, the BannerSize passed in here needs to be consistent with the size of the ad slot.
 
 #### 2. Load a Banner Ad
 
@@ -245,7 +236,7 @@ Call the getAdView() method of the TDSplash instance to obtain the ad View, and 
 
 Call the getAdView() method of the TDBanner instance to obtain the ad View, and add the ad View to the target container for display.      
 
-**Note**: The size of the ad creative is only determined by the size selected when creating the ad slot. The BannerSize passed in here is only used to preset a width and height for AdView. To ensure the best display effect, the BannerSize passed in here needs to be consistent with the size selected when creating the ad slot. Of course, you can also set the width and height for AdView yourself after obtaining AdView.
+**Note**: The size of the ad creative is only determined by the size selected when creating the ad slot.
 
 #### 5. Destory the Ad
 
@@ -611,10 +602,10 @@ BrainX will collect device information and GAID and report this data to determin
 
 ## Support for mediation
 
-|Mediation|Ad type|Network Adapter version|Implementation|
-|---|---|---|---|
-|TradPlus|Splash、Banner、RewardVideo、Inter|1001|implementation 'tech.brainx.sdk:network-tradplus:1.0.0.1'|
-|Topon|Splash、Banner、RewardVideo、Inter|1001|implementation 'tech.brainx.sdk:network-topon:1.0.0.1'|
-|IronSource|Banner、RewardVideo、Inter|1001|implementation 'tech.brainx.sdk:network-ironsource:1.0.0.1'|
-|Max|Banner、RewardVideo、Inter|1001|implementation 'tech.brainx.sdk:network-max:1.0.0.1'|
-|Admob|Banner、RewardVideo、Inter|1001|implementation 'tech.brainx.sdk:network-admob:1.0.0.1'|
+|Mediation|Ad type| Network Adapter version | Implementation                                              |
+|---|---|-------------------------|-------------------------------------------------------------|
+|TradPlus|Splash、Banner、RewardVideo、Inter| 1002                    | implementation 'tech.brainx.sdk:network-tradplus:1.0.0.2'   |
+|Topon|Splash、Banner、RewardVideo、Inter| 1001                    | implementation 'tech.brainx.sdk:network-topon:1.0.0.1'      |
+|IronSource|Banner、RewardVideo、Inter| 1001                    | implementation 'tech.brainx.sdk:network-ironsource:1.0.0.1' |
+|Max|Banner、RewardVideo、Inter| 1001                    | implementation 'tech.brainx.sdk:network-max:1.0.0.1'        |
+|Admob|Banner、RewardVideo、Inter| 1001                    | implementation 'tech.brainx.sdk:network-admob:1.0.0.1'      |
