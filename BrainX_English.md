@@ -14,13 +14,14 @@
 | 2024-11-15 | 2.0.1.0 | 1、Support for Native, fill rate optimisation, known issues fixed. |
 | 2024-11-26 | 2.0.1.1 | 1、Fill rate optimisation, known issues fixed. |
 | 2025-04-15 | 2.0.1.2 | 1、Banner interface optimization. |
+| 2025-06-05  | 2.0.1.3 | 1、Fill rate optimisation, known issues fixed. |
 
 ## Integration
 
 ### Add SDK Implementation
 
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-	//For example: implementation 'tech.brainx.sdk:brainxsdk:2.0.1.2'
+	//For example: implementation 'tech.brainx.sdk:brainxsdk:2.0.1.3'
 
 ### Add SDK-dependent permission declaration
 

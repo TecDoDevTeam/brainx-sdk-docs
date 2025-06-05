@@ -13,13 +13,14 @@
 | 2024-11-15 | 2.0.1.0 | 1、Native广告支持，优化填充效果，修复已知问题。   |
 | 2024-11-26 | 2.0.1.1 | 1、优化填充效果，修复已知问题。              |
 | 2025-04-15 | 2.0.1.2 | 1、Banner接入接口优化。               |
+| 2025-06-05  | 2.0.1.3 | 1、优化填充效果，已知问题修复。         |
 
 ## 接入方式
 
 ### 添加SDK依赖库
 	
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.0.1.2'
+	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.0.1.3'
 
 ### 在AndroidManifest.xml中添加SDK依赖的权限申明
 
