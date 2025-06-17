@@ -28,6 +28,7 @@
 ## Integration
 
 ### Add SDK Implementation
+![Maven Central](https://img.shields.io/maven-central/v/tech.brainx.sdk/brainxsdk.svg?label=Maven%20Central)
 
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
     //For example: implementation 'tech.brainx.sdk:brainxsdk:2.1.0.0'
