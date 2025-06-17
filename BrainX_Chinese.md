@@ -15,6 +15,17 @@
 | 2025-04-15 | 2.0.1.2 | 1、Banner接入接口优化。               |
 | 2025-06-05  | 2.0.1.3 | 1、优化填充效果，已知问题修复。         |
 
+## 功能描述
+
+| Ad Type          | Material Support      | Display Mode        | Description                                                                 |
+| ---------------- | --------------------- | ------------------- | --------------------------------------------------------------------------- |
+| **Splash**       | Image                 | Embedded Display    | Display at app launch, requires >3/4 screen coverage                        |
+| **Banner**       | Image                 | Embedded Display    | Can be embedded anywhere in the page, supports multiple size specifications |
+| **RewardVideo**  | Video                 | Full-Screen Display | Full-screen video playback, users receive rewards after completion          |
+| **Interstitial** | Image + Text or Video | Full-Screen Display | Full-screen display, supports image, video combinations                     |
+| **Native**       | Image + Text          | Embedded Display    | Fully integrates into app interface, supports template and custom rendering |
+
+
 ## 接入方式
 
 ### 添加SDK依赖库
