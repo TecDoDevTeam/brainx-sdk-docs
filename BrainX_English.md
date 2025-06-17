@@ -13,6 +13,7 @@
 | 2024-11-26 | 2.0.1.1 | 1、Fill rate optimisation, known issues fixed.                     |
 | 2025-04-15 | 2.0.1.2 | 1、Banner interface optimization.                                  |
 | 2025-06-05 | 2.0.1.3 | 1、Fill rate optimisation, known issues fixed.                     |
+| 2025-06-17 | 2.1.0.0 | 1、Adjustment of integration approach, known issues fixed.         |
 
 ## Features
 
@@ -29,7 +30,7 @@
 ### Add SDK Implementation
 
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-    //For example: implementation 'tech.brainx.sdk:brainxsdk:2.0.1.3'
+    //For example: implementation 'tech.brainx.sdk:brainxsdk:2.1.0.0'
 
 ### Add SDK-dependent permission declaration
 
@@ -103,35 +104,24 @@ Related privacy agreements：[GDPR](https://en.wikipedia.org/wiki/General_Data_P
 | ------------------------------ | ---------------------------------------------- |
 | void setAdTimeOut(int seconds) | Set the ad request timeout, at least 3 seconds |
 
-#### 2. Load a Splash Ad
+#### 2. Create TDSplashAd instance
 
-    TDSplash.load("SPLASH_PLACEMENT_ID", tdSplashConfig, new TDSplashLoadListener() {
+    TDSplashAd splashAd = new TDSplashAd("SPLASH_PLACEMENT_ID", tdSplashConfig);
+
+#### 3. Register Ad Event Callback
+
+    splashAd.setListener(new TDSplashAdListener() {
         @Override
         public void onAdLoaded(@NonNull TDSplash tdSplash) {
-            // load success
-            this.tdSplash = tdSplash;
+            // load success, ready to show
+            splashAd.show(container)
         }
     
         @Override
         public void onError(@NonNull TDError tdError) {
             // load fail
         }
-    });
 
-| TDSplashLoadListener               | Description                                                        |
-| ---------------------------------- | ------------------------------------------------------------------ |
-| void onAdLoaded(TDSplash tdSplash) | The ad request is successful and the TDSplash instance is returned |
-| void onError(TDError tdError)      | The ad request fails and returns a TDError instance.               |
-
-| TDSplash                                                    | Description                |
-| ----------------------------------------------------------- | -------------------------- |
-| View getAdView()                                            | Get the adview for display |
-| void setEventListener(eventListener: TDSplashEventListener) | Set event listener for ad  |
-| double getBidPrice()                                        | Get the price of the Ad    |
-
-#### 3. Register Ad Event Callback
-
-    tdSplash.setEventListener(new TDSplashEventListener() {
         @Override
         public void onAdClicked() {
             // Ad is clicked
@@ -140,27 +130,41 @@ Related privacy agreements：[GDPR](https://en.wikipedia.org/wiki/General_Data_P
         @Override
         public void onAdDismissed() {
             // Ad is dismissed
-            SplashActivity.this.finish();
         }
     
         @Override
         public void onAdShowed() {
             // Ad is showed
         }
+
+        @Override
+        public void onAdShowedFail(@NonNull TDError error) {
+            // Ad show failed
+        }
     });
 
-| TDSplashEventListener | Description                                                                                     |
-| --------------------- | ----------------------------------------------------------------------------------------------- |
+| TDSplashAdListener               | Description                                                                                     |
+| -------------------------------- | ----------------------------------------------------------------------------------------------- |
+| void onAdLoaded(TDSplash tdSplash) | The ad request is successful and the TDSplash instance is returned |
+| void onError(TDError tdError)      | The ad request fails and returns a TDError instance.               |
 | void onAdClicked()    | Ad click callback, triggered when the user clicks on the ad hotspot                             |
 | void onAdDismissed()  | Ad close callback, triggered when the user clicks the skip button or the countdown is completed |
 | void onAdShowed()     | Ad display callback, triggered when the ad is effectively displayed                             |
+| void onAdShowedFail(TDError error) | Ad show fail callback |
 
-#### 4. Display the Ad
+| TDSplash                                            | Description                |
+| --------------------------------------------------- | -------------------------- |
+| double getBidPrice()                                | Get the price of the Ad    |
 
-    View adView = tdSplash.getAdView();
-    container.addView(adView)
+| TDSplashAd | Description |
+| ---------- | ----------- |
+| void show(ViewGroup container) | Show Splash |
 
-Call the getAdView() method of the TDSplash instance to obtain the ad View, and add the ad View to the target container for display.
+#### 4. Load and Display the Ad
+
+    splashAd.load();
+
+Call the load() method to request ad, and show the ad in the container in onAdLoaded callback.
 
 **Note**：Splash needs to occupy more than 3/4 of the screen size, and it cannot be blocked by more than 1/3, otherwise it will not be considered to be displayed normally.
 
@@ -181,38 +185,23 @@ Call the getAdView() method of the TDSplash instance to obtain the ad View, and 
 | ------------------------------ | ---------------------------------------------- |
 | void setAdTimeOut(int seconds) | Set the ad request timeout, at least 3 seconds |
 
-#### 2. Load a Banner Ad
+#### 2. Create TDBannerAdView instance
 
-    TDBanner.load("BANNER_PLACEMENT_ID", tdBannerConfig, new TDBannerLoadListener() {
+    TDBannerAdView bannerAdView = new TDBannerAdView(context, "BANNER_PLACEMENT_ID", tdBannerConfig);
+
+#### 3. Register Ad Event Callback
+
+    bannerAdView.setListener(new TDBannerAdListener() {
         @Override
         public void onAdLoaded(@NonNull TDBanner tdBanner) {
             // load success
-            this.tdBanner = tdBanner
         }
     
         @Override
         public void onError(@NonNull TDError tdError) {
             // load fail
         }
-    });
 
-| TDBannerLoadListener               | Description                                                        |
-| ---------------------------------- | ------------------------------------------------------------------ |
-| void onAdLoaded(TDBanner tdBanner) | The ad request is successful and the TDBanner instance is returned |
-| void onError(TDError tdError)      | The ad request fails and returns a TDError instance.               |
-
-| TDBanner                                                    | Description                          |
-| ----------------------------------------------------------- | ------------------------------------ |
-| View getAdView()                                            | Get the AdView for display           |
-| void setEventListener(eventListener: TDBannerEventListener) | Set event listener for the Ad        |
-| double getBidPrice()                                        | Get the price of the Ad              |
-| double getAdWidth()                                         | Get the width of the Ad              |
-| double getAdHeight()                                        | Get the height of the Ad             |
-| void destroy()                                              | Destroy the Ad and recycle resources |
-
-#### 3. Register Ad Event Callback
-
-    tdBanner.setEventListener(new TDBannerEventListener() {
         @Override
         public void onAdClicked() {
             // Ad is clicked
@@ -229,26 +218,32 @@ Call the getAdView() method of the TDSplash instance to obtain the ad View, and 
         }
     });
 
-| TDBannerEventListener | Description                                                         |
-| --------------------- | ------------------------------------------------------------------- |
+| TDBannerAdListener | Description                                                         |
+| ------------------ | ------------------------------------------------------------------- |
+| void onAdLoaded(TDBanner tdBanner) | The ad request is successful and the TDBanner instance is returned |
+| void onError(TDError tdError)      | The ad request fails and returns a TDError instance.               |
 | void onAdClicked()    | Ad click callback, triggered when the user clicks on the ad hotspot |
 | void onAdDismissed()  | Ad close callback, triggered when the user clicks the skip button   |
 | void onAdShowed()     | Ad display callback, triggered when the ad is effectively displayed |
 
-#### 4. Display the Ad
+| TDBanner                          | Description                          |
+| --------------------------------- | ------------------------------------ |
+| double getBidPrice()              | Get the price of the Ad              |
+| double getAdWidth()               | Get the width of the Ad              |
+| double getAdHeight()              | Get the height of the Ad             |
 
-    View adView = tdBanner.getAdView();
-    // You can also set the width and height of adView yourself
-    // adView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-    container.addView(adView)
+#### 4. Load and Display the Ad
 
-Call the getAdView() method of the TDBanner instance to obtain the ad View, and add the ad View to the target container for display.      
+    bannerAdView.load();
+    container.addView(bannerAdView);
 
-**Note**: The size of the ad creative is only determined by the size selected when creating the ad slot.
+Create TDBannerAdView instance, call load() method to request ad, and add bannerAdView to the target container.
+
+**Note**: The Banner cannot be blocked by more than 1/3, otherwise it will not be calculated as normal display.
 
 #### 5. Destory the Ad
 
-    tdBanner.destroy()
+    bannerAdView.destroy();
 
 Call this method to reclaim resources when the page is destroyed or the banner no longer needs to be displayed.
 
@@ -268,38 +263,23 @@ Call this method to reclaim resources when the page is destroyed or the banner n
 | ------------------------------ | ---------------------------------------------------------------------------------- |
 | void setAdTimeOut(int seconds) | Set the ad request timeout in seconds, the minimum is 3s, the default is 8 seconds |
 
-#### 2、Load a Reward Video
+#### 2、Create TDRewardVideoAd instance
 
-    TDRewardVideo.load("REWARDVIDEO_PLACEMENT_ID", tDRewardVideoConfig, new TDRewardVideoLoadListener() {
+    TDRewardVideoAd rewardVideoAd = new TDRewardVideoAd("REWARDVIDEO_PLACEMENT_ID", tDRewardVideoConfig);
+
+#### 3、Register Ad Event Callback
+
+    rewardVideoAd.setListener(new TDRewardVideoAdListener() {
         @Override
         public void onAdLoaded(@NonNull TDRewardVideo tdRewardVideo) {
             // load success
-            this.tdRewardVideo = tdRewardVideo
         }
     
         @Override
         public void onError(@NonNull TDError tdError) {
             // load fail
         }
-    });
 
-| TDRewardVideoLoadListener                    | Description                                                            |
-| -------------------------------------------- | ---------------------------------------------------------------------- |
-| void onAdLoaded(TDRewardVideo tdRewardVideo) | The ad request is successful and a TDRewardVideo instance is returned. |
-| void onError(TDError tdError)                | The ad request failed and a TDError instance was returned.             |
-
-| TDRewardVideo                                                   | Description                       |
-| --------------------------------------------------------------- | --------------------------------- |
-| boolean isReady()                                               | Whether RewardVideo can be played |
-| void show()                                                     | Show RewardVideo                  |
-| void setEventListener(TDRewardVideoEventListener eventListener) | Set event listener for the Ad     |
-| double getBidPrice()                                            | Get the price of the Ad           |
-
-**Note**：RewardVideo involves loading video material, which might takes time. In order to ensure the display effect, it is recommended to load the ad in advance! !
-
-#### 3、Register Ad Event Callback
-
-    tdRewardVideo.setEventListener(new TDRewardVideoEventListener() {
         @Override
         public void onAdShowedFail(@NonNull TDError error) {
             // Ad fail to show
@@ -336,8 +316,10 @@ Call this method to reclaim resources when the page is destroyed or the banner n
 | String getItemName()   | Reward Name   |
 | String getItemNumber() | Reward Number |
 
-| TDRewardVideoEventListener                      | Description                                                         |
-| ----------------------------------------------- | ------------------------------------------------------------------- |
+| TDRewardVideoAdListener                     | Description                                                         |
+| ------------------------------------------- | ------------------------------------------------------------------- |
+| void onAdLoaded(TDRewardVideo tdRewardVideo) | The ad request is successful and a TDRewardVideo instance is returned. |
+| void onError(TDError tdError)                | The ad request failed and a TDError instance was returned.             |
 | void onAdShowedFail(TDError error)              | Ad show fail callback                                               |
 | void onRewardedSuccess(TDRewardItem rewardItem) | Ad reward success callback                                          |
 | void onRewardedFail()                           | Ad reward fail callback                                             |
@@ -345,10 +327,25 @@ Call this method to reclaim resources when the page is destroyed or the banner n
 | void onAdDismissed()                            | Ad close callback, triggered when the user clicks the skip button   |
 | void onAdShowed()                               | Ad display callback, triggered when the ad is effectively displayed |
 
-#### 4、 Display the Ad
+| TDRewardVideo                                           | Description                       |
+| ------------------------------------------------------- | --------------------------------- |
+| double getBidPrice()                                    | Get the price of the Ad           |
 
-    if (tdRewardVideo.isReady()) {
-        tdRewardVideo.show();
+| TDRewardVideoAd | Description |
+| --------------- | ----------- |
+| boolean isReady() | Whether RewardVideo can be played |
+| void show() | Show RewardVideo |
+
+**Note**：RewardVideo involves loading video material, which might takes time. In order to ensure the display effect, it is recommended to load the ad in advance! !
+
+#### 4、Load the Ad
+
+    rewardVideoAd.load();
+
+#### 5、 Display the Ad
+
+    if (rewardVideoAd.isReady()) {
+        rewardVideoAd.show();
     }
 
 ## Interstitial
@@ -366,38 +363,23 @@ Call this method to reclaim resources when the page is destroyed or the banner n
 | ------------------------------ | ---------------------------------------------------------------------------------- |
 | void setAdTimeOut(int seconds) | Set the ad request timeout in seconds, the minimum is 3s, the default is 8 seconds |
 
-#### 2、Load an Interstitial
+#### 2、Create TDInterstitialAd instance
 
-    TDInterstitial.load("INTER_PLACEMENT_ID", tDInterstitialConfig, new TDInterstitialLoadListener() {
+    TDInterstitialAd interstitialAd = new TDInterstitialAd("INTER_PLACEMENT_ID", tDInterstitialConfig);
+
+#### 3、Register Ad Event Callback
+
+    interstitialAd.setListener(new TDInterstitialAdListener() {
         @Override
         public void onAdLoaded(@NonNull TDInterstitial tDInterstitial) {
             // load success
-            this.tDInterstitial = tDInterstitial
         }
     
         @Override
         public void onError(@NonNull TDError tdError) {
             // load fail
         }
-    });
 
-| TDInterstitialLoadListener                     | Description                                                             |
-| ---------------------------------------------- | ----------------------------------------------------------------------- |
-| void onAdLoaded(TDInterstitial tDInterstitial) | The ad request is successful and a TDInterstitial instance is returned. |
-| void onError(TDError tdError)                  | The ad request failed and a TDError instance was returned.              |
-
-| TDInterstitial                                                   | Description                       |
-| ---------------------------------------------------------------- | --------------------------------- |
-| boolean isReady()                                                | Whether RewardVideo can be played |
-| void show()                                                      | Show Interstitial                 |
-| void setEventListener(TDInterstitialEventListener eventListener) | Set event listener for the Ad     |
-| double getBidPrice()                                             | Get the price of the Ad           |
-
-**Note**：Interstitial involves loading video material, which might takes time. In order to ensure the display effect, it is recommended to load the ad in advance! !
-
-#### 3、Register Ad Event Callback
-
-    tDInterstitial.setEventListener(new TDInterstitialLoadListener() {
         @Override
         public void onAdShowedFail(@NonNull TDError error) {
             // Ad fail to show
@@ -419,17 +401,34 @@ Call this method to reclaim resources when the page is destroyed or the banner n
         }
     });
 
-| TDInterstitialLoadListener         | Description                                                         |
-| ---------------------------------- | ------------------------------------------------------------------- |
+| TDInterstitialAdListener       | Description                                                         |
+| ------------------------------ | ------------------------------------------------------------------- |
+| void onAdLoaded(TDInterstitial tDInterstitial) | The ad request is successful and a TDInterstitial instance is returned. |
+| void onError(TDError tdError)                  | The ad request failed and a TDError instance was returned.              |
 | void onAdShowedFail(TDError error) | Ad show fail callback                                               |
 | void onAdClicked()                 | Ad click callback, triggered when the user clicks on the ad hotspot |
 | void onAdDismissed()               | Ad close callback, triggered when the user clicks the skip button   |
 | void onAdShowed()                  | Ad display callback, triggered when the ad is effectively displayed |
 
-#### 4、Display the Ad
+| TDInterstitial                                       | Description                       |
+| ---------------------------------------------------- | --------------------------------- |
+| double getBidPrice()                                 | Get the price of the Ad           |
 
-    if (tDInterstitial.isReady()) {
-        tDInterstitial.show();
+| TDInterstitialAd | Description |
+| ---------------- | ----------- |
+| boolean isReady() | Whether Interstitial can be played |
+| void show() | Show Interstitial |
+
+**Note**：Interstitial involves loading video material, which might takes time. In order to ensure the display effect, it is recommended to load the ad in advance! !
+
+#### 4、Load the Ad
+
+    interstitialAd.load();
+
+#### 5、Display the Ad
+
+    if (interstitialAd.isReady()) {
+        interstitialAd.show();
     }
 
 ## Native
@@ -450,43 +449,26 @@ Call this method to reclaim resources when the page is destroyed or the banner n
 | ------------------------------ | ---------------------------------------------- |
 | void setAdTimeOut(int seconds) | Set the ad request timeout, at least 3 seconds |
 
-#### 2、Load a Native
+#### 2、Create TDNativeAd instance
 
-    TDNative.load("NATIVE_PLACEMENT_ID", tdNativeConfig, new TDNativeLoadListener() {
+    TDNativeAd nativeAd = new TDNativeAd("NATIVE_PLACEMENT_ID", tdNativeConfig);
+
+#### 3、Register Ad Event Callback
+
+    nativeAd.setListener(new TDNativeAdListener() {
         @Override
         public void onAdLoaded(@NonNull TDNative tdNative) {
-            // load success
-            this.tdNative = tdNative
+            // load success, call renderForTemplate for template rendering
+            if (tdNativeConfig.getNativeType() == TDNativeConfig.NativeType.TEMPLATE_RENDERING) {
+                nativeAd.renderForTemplate(context);
+            }
         }
     
         @Override
         public void onError(@NonNull TDError tdError) {
             // load fail
         }
-    });
 
-| TDNativeLoadListener               | Description                                                       |
-| ---------------------------------- | ----------------------------------------------------------------- |
-| void onAdLoaded(TDNative tdNative) | The ad request is successful and a TDNative instance is returned. |
-| void onError(TDError tdError)      | The ad request failed and a TDError instance was returned.        |
-
-| TDNative                                                                                         | Description                                                                                                                                                                              |
-| ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| boolean bindViewsForInteraction(ViewGroup container, List<View> creativeViews, View dislikeView) | Bind interaction events for Self-rendering Native, it needs to be called in the main thread. Returning true means the binding is successful, and returning false means the binding fails |
-| void renderForTemplate(Context context)                                                          | Render template rendering Native                                                                                                                                                         |
-| string getIcon()                                                                                 | Get icon url                                                                                                                                                                             |
-| string getTitle()                                                                                | Get title                                                                                                                                                                                |
-| string getDescription()                                                                          | Get description                                                                                                                                                                          |
-| double getRating()                                                                               | Get rating                                                                                                                                                                               |
-| string getCTAText(): String                                                                      | Get CTA button text                                                                                                                                                                      |
-| View getAdLogoView(context: Context)                                                             | Get BrainX logo view                                                                                                                                                                     |
-| View getMediaView(context: Context)                                                              | Get media view                                                                                                                                                                           |
-| void setEventListener(TDNativeEventListener eventListener)                                       | Set event listener for the Ad                                                                                                                                                            |
-| double getBidPrice()                                                                             | Get bid price                                                                                                                                                                            |
-
-#### 3、Register Ad Event Callback
-
-    tdNative.setEventListener(new TDNativeEventListener() {
         @Override
         public void onAdClicked() {
             // Ad is clicked
@@ -503,29 +485,54 @@ Call this method to reclaim resources when the page is destroyed or the banner n
         }
     
         @Override
-        public void onRenderFail() {
+        public void onRenderFail(TDError error) {
             // Template Native fail to render
         }
     
         @Override
         public void onRenderSuccess(TDNativeView nativeView) {
             // Template Native rendering is successful
+            container.addView(nativeView);
         }
     });
 
-| TDNativeEventListener                   | Description                                                         |
-| --------------------------------------- | ------------------------------------------------------------------- |
+| TDNativeAdListener               | Description                                                       |
+| -------------------------------- | ----------------------------------------------------------------- |
+| void onAdLoaded(TDNative tdNative) | The ad request is successful and a TDNative instance is returned. |
+| void onError(TDError tdError)      | The ad request failed and a TDError instance was returned.        |
 | void onAdClicked()                      | Ad click callback, triggered when the user clicks on the ad hotspot |
 | void onAdDismissed()                    | Ad close callback, triggered when the user clicks the skip button   |
 | void onAdShowed()                       | Ad display callback, triggered when the ad is effectively displayed |
-| void onRenderFail()                     | Template Native fail to render                                      |
+| void onRenderFail(TDError error)                     | Template Native fail to render                                      |
 | void onRenderSuccess(TDNativeView view) | Template Native rendering is successful                             |
 
-#### 4、Render
+| TDNative                                                 | Description                                                                                                                                                                              |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| string getIcon()                                         | Get icon url                                                                                                                                                                             |
+| string getTitle()                                        | Get title                                                                                                                                                                                |
+| string getDescription()                                  | Get description                                                                                                                                                                          |
+| double getRating()                                       | Get rating                                                                                                                                                                               |
+| string getCTAText(): String                              | Get CTA button text                                                                                                                                                                      |
+| View getAdLogoView(context: Context)                     | Get BrainX logo view                                                                                                                                                                     |
+| View getMediaView(context: Context)                      | Get media view                                                                                                                                                                           |
+| double getBidPrice()                                     | Get bid price                                                                                                                                                                            |
+
+| TDNativeAd | Description |
+| ---------- | ----------- |
+| boolean bindViewsForInteraction(ViewGroup container, List<View> creativeViews, View dislikeView) | Bind interaction events for Self-rendering Native, it needs to be called in the main thread. Returning true means the binding is successful, and returning false means the binding fails |
+| void renderForTemplate(Context context) | Render template rendering Native |
+| void destroy() | Destroy the Ad and recycle resources |
+
+#### 4、Load the Ad
+
+    nativeAd.load();
+
+#### 5、Render
 
 ```
 //Template Rendering
-tdNative.renderForTemplate(NativeActivity.this);
+// Call in onAdLoaded callback
+nativeAd.renderForTemplate(context);
 ```
 
     //Self Rendering
@@ -578,20 +585,20 @@ tdNative.renderForTemplate(NativeActivity.this);
 
 **Note**: The NativeType passed in by TDNativeConfig represents the type of Native:
 
-- When TEMPLATE_RENDERING is passed in, it means that this Native is template rendering, and renderForTemplate(Context context) should be called to render the template Native.
+- When TEMPLATE_RENDERING is passed in, it means that this Native is template rendering, call renderForTemplate(Context context) in onAdLoaded callback to render the template Native.
 - When SELF_RENDERING is passed in, you need to write your own native view, obtain the ad material through the TDNative object and render the native view yourself. And call the bindViewsForInteraction(ViewGroup container, List<View> creativeViews, View dislikeView) interface to bind interactive events and listeners. container represents the root container of the native view, creativeViews represents all material Views, and dislikeView represents the close button.  **All creativeViews and dislikeView must be located in the your native view, MediaView and LogoView must be added to your native view and added in the creativeViews List for binding! !**
 
-#### 5、Display the Ad
+#### 6、Display the Ad
 
-    adContainer.addView(nativeView)
+    container.addView(nativeView)
 
-Add the ad View to the target container for display.   
+Add the ad View to the target container for display.
 
 **Notice：**Native cannot be blocked by more than 1/3, otherwise it will not be considered to be displayed normally.
 
-#### 6、Destroy the Ad
+#### 7、Destroy the Ad
 
-    tdNative.destroy()
+    nativeAd.destroy()
 
 Call this method to reclaim resources when the page is destroyed or the native ad no longer needs to be displayed.
 
@@ -606,8 +613,8 @@ BrainX will collect device information and GAID and report this data to determin
 
 | Mediation  | Ad type                         | Network Adapter version | Implementation                                              |
 | ---------- | ------------------------------- | ----------------------- | ----------------------------------------------------------- |
-| TradPlus   | Splash、Banner、RewardVideo、Inter | 1002                    | implementation 'tech.brainx.sdk:network-tradplus:1.0.0.2'   |
-| Topon      | Splash、Banner、RewardVideo、Inter | 1001                    | implementation 'tech.brainx.sdk:network-topon:1.0.0.1'      |
-| IronSource | Banner、RewardVideo、Inter        | 1001                    | implementation 'tech.brainx.sdk:network-ironsource:1.0.0.1' |
-| Max        | Banner、RewardVideo、Inter        | 1001                    | implementation 'tech.brainx.sdk:network-max:1.0.0.1'        |
-| Admob      | Banner、RewardVideo、Inter        | 1001                    | implementation 'tech.brainx.sdk:network-admob:1.0.0.1'      |
+| TradPlus   | Splash、Banner、RewardVideo、Inter | 1100                    | implementation 'tech.brainx.sdk:network-tradplus:1.1.0.0'   |
+| Topon      | Splash、Banner、RewardVideo、Inter | 1100                    | implementation 'tech.brainx.sdk:network-topon:1.1.0.0'      |
+| IronSource | Banner、RewardVideo、Inter        | 1100                    | implementation 'tech.brainx.sdk:network-ironsource:1.1.0.0' |
+| Max        | Banner、RewardVideo、Inter        | 1100                    | implementation 'tech.brainx.sdk:network-max:1.1.0.0'        |
+| Admob      | Banner、RewardVideo、Inter        | 1100                    | implementation 'tech.brainx.sdk:network-admob:1.1.0.0'      |
