@@ -1,4 +1,3 @@
-
 # BrainX SDK集成文档
 
 
@@ -13,7 +12,8 @@
 | 2024-11-15 | 2.0.1.0 | 1、Native广告支持，优化填充效果，修复已知问题。   |
 | 2024-11-26 | 2.0.1.1 | 1、优化填充效果，修复已知问题。              |
 | 2025-04-15 | 2.0.1.2 | 1、Banner接入接口优化。               |
-| 2025-06-05  | 2.0.1.3 | 1、优化填充效果，已知问题修复。         |
+| 2025-06-05 | 2.0.1.3 | 1、优化填充效果，已知问题修复。              |
+| 2025-06-17  | 2.1.0.0 | 1、调整接入方式，已知问题修复。              |
 
 ## 功能描述
 
@@ -29,9 +29,10 @@
 ## 接入方式
 
 ### 添加SDK依赖库
+![Maven Central](https://img.shields.io/maven-central/v/tech.brainx.sdk/brainxsdk.svg?label=Maven%20Central)
 	
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.0.1.3'
+	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.1.0.0'
 
 ### 在AndroidManifest.xml中添加SDK依赖的权限申明
 
@@ -107,35 +108,24 @@
 |---|---|
 |void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为3s，默认为3秒 |
 
-#### 2、请求广告
+#### 2、创建TDSplashAd实例
 
-	TDSplash.load("SPLASH_PLACEMENT_ID", tdSplashConfig, new TDSplashLoadListener() {
-		@Override
-        public void onAdLoaded(@NonNull TDSplash tdSplash) {
-			// 请求成功
-			this.tdSplash = tdSplash;
-        }
-
-        @Override
-        public void onError(@NonNull TDError tdError) {
-			// 请求失败
-        }
-    });
-
-|TDSplashLoadListener|描述|
-|---|---|
-|void onAdLoaded(TDSplash tdSplash)| 广告请求成功，返回TDSplash实例 |
-|void onError(TDError tdError)| 广告请求失败，返回TDError实例 |
-
-|TDSplash|描述|
-|---|---|
-|View getAdView()| 获取用于展示的AdView |
-|void setEventListener(eventListener: TDSplashEventListener)| 设置广告事件监听 |
-|double getBidPrice()| 获取广告价格 |
+	TDSplashAd splashAd = new TDSplashAd("SPLASH_PLACEMENT_ID", tdSplashConfig);
 
 #### 3、设置事件监听
 
-	tdSplash.setEventListener(new TDSplashEventListener() {
+	splashAd.setListener(new TDSplashAdListener() {
+		@Override
+		public void onAdLoaded(@NonNull TDSplash tdSplash) {
+			// 请求成功，可进行展示
+			splashAd.show(container)
+		}
+
+		@Override
+		public void onError(@NonNull TDError tdError) {
+			// 请求失败
+		}
+
 		@Override
 		public void onAdClicked() {
 			// 广告点击
@@ -144,27 +134,40 @@
 		@Override
 		public void onAdDismissed() {
 			// 广告关闭
-			SplashActivity.this.finish();
 		}
 		
 		@Override
 		public void onAdShowed() {
 			// 广告展示
 		}
+
+		@Override
+		public void onAdShowedFail(@NonNull TDError error) {
+			// 广告展示失败
+		}
 	});
 
-|TDSplashEventListener|描述|
+|TDSplashAdListener|描述|
 |---|---|
+|void onAdLoaded(TDSplash tdSplash)| 广告请求成功，返回TDSplash实例 |
+|void onError(TDError tdError)| 广告请求失败，返回TDError实例 |
 |void onAdClicked()| 广告点击回调，用户点击广告热区时触发 |
 |void onAdDismissed()| 广告关闭回调，用户点击跳过按钮，或者倒计时完成时触发 |
 |void onAdShowed()| 广告展示回调，广告有效展示时触发 |
+|void onAdShowedFail(TDError error)| 广告展示失败回调 |
 
-#### 4、展示广告
+|TDSplash|描述|
+|---|---|
+|double getBidPrice()| 获取广告价格 |
 
-	View adView = tdSplash.getAdView();
-	container.addView(adView)
+|TDSplashAd|描述|
+|void show(ViewGroup container)| 展示Splash |
 
-调用TDSplash实例的getAdView()方法获取广告View，并将广告View添加到目标container当中去展示。 
+#### 4、请求并展示广告
+
+	splashAd.load();
+
+调用load()方法请求广告，在onAdLoaded回调中将广告展示到 container 中。
 
 **注意**：Splash需要占屏幕大小的 **3/4** 以上，并且其本身不能被遮挡超过 **1/3**，否则将 **无法** 正常计算展示。   
 
@@ -186,41 +189,23 @@
 |---|---|
 |void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为3s，默认为3秒 |
 
-#### 2、请求广告
+#### 2、创建TDBannerAdView实例
 
-	TDBanner.load("BANNER_PLACEMENT_ID", tdBannerConfig, new TDBannerLoadListener() {
-		@Override
-		public void onAdLoaded(@NonNull TDBanner tdBanner) {
-			// 请求成功
-			this.tdBanner = tdBanner
-		}
-
-        @Override
-		public void onError(@NonNull TDError tdError) {
-			// 请求失败
-		}
-	});
-
-
-|TDBannerLoadListener|描述|
-|---|---|
-|void onAdLoaded(TDBanner tdBanner)| 广告请求成功，返回TDBanner实例 |
-|void onError(TDError tdError)| 广告请求失败，返回TDError实例 |
-
-
-|TDBanner| 描述           |
-|---|--------------|
-|View getAdView()| 获取用于展示的AdView |
-|void setEventListener(eventListener: TDBannerEventListener)| 设置广告事件监听     |
-|double getBidPrice() | 获取广告价格       |
-|double getAdWidth() | 获取广告宽度       |
-|double getAdHeight() | 获取广告高度       |
-|void destroy() | 销毁广告，回收广告资源  |
-
+	TDBannerAdView bannerAdView = new TDBannerAdView(context, "BANNER_PLACEMENT_ID", tdBannerConfig);
 
 #### 3、设置事件监听
 
-	tdBanner.setEventListener(new TDBannerEventListener() {
+	bannerAdView.setListener(new TDBannerAdListener() {
+		@Override
+		public void onAdLoaded(@NonNull TDBanner tdBanner) {
+			// 请求成功
+		}
+
+		@Override
+		public void onError(@NonNull TDError tdError) {
+			// 请求失败
+		}
+
 		@Override
 		public void onAdClicked() {
 			// 广告点击
@@ -237,25 +222,31 @@
 		}
 	});
 
-|TDBannerEventListener|描述|
+|TDBannerAdListener|描述|
 |---|---|
+|void onAdLoaded(TDBanner tdBanner)| 广告请求成功，返回TDBanner实例 |
+|void onError(TDError tdError)| 广告请求失败，返回TDError实例 |
 |void onAdClicked()| 广告点击回调，用户点击热区时触发 |
 |void onAdDismissed()| 广告关闭回调，用户点击关闭按钮时触发 |
 |void onAdShowed()| 广告展示回调，广告有效展示时触发 |
 
-#### 4、展示广告
+|TDBanner| 描述           |
+|---|--------------|
+|double getBidPrice() | 获取广告价格       |
+|double getAdWidth() | 获取广告宽度       |
+|double getAdHeight() | 获取广告高度       |
 
-	View adView = tdBanner.getAdView();
-	// 你也可以自己给adView设置宽高
-	// adView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-	container.addView(adView)
+#### 4、请求并展示广告
 
-调用TDBanner实例的getAdView()方法获取广告View，并将广告View添加到目标container当中去展示。   
+	bannerAdView.load();
+	container.addView(bannerAdView);
+
+创建TDBannerAdView实例后，调用load()方法请求广告，同时将bannerAdView添加到目标container当中。   
 **注意**：Banner不能被遮挡超过 **1/3** ，否则将 **无法** 正常计算展示。
 
 #### 5、销毁广告
 
-	tdBanner.destroy()
+	bannerAdView.destroy();
 
 在页面销毁或者banner不再需要展示时调用以回收资源。
 
@@ -275,41 +266,23 @@
 |---|---|
 |void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为3s，默认为8秒 |
 
+#### 2、创建TDRewardVideoAd实例
 
-#### 2、请求广告
-
-	TDRewardVideo.load("REWARDVIDEO_PLACEMENT_ID", tDRewardVideoConfig, new TDRewardVideoLoadListener() {
-		@Override
-		public void onAdLoaded(@NonNull TDRewardVideo tdRewardVideo) {
-			// 请求成功
-			this.tdRewardVideo = tdRewardVideo
-		}
-
-        @Override
-		public void onError(@NonNull TDError tdError) {
-			// 请求失败
-		}
-	});
-
-
-|TDRewardVideoLoadListener|描述|
-|---|---|
-|void onAdLoaded(TDRewardVideo tdRewardVideo)| 广告请求成功，返回TDRewardVideo实例 |
-|void onError(TDError tdError)| 广告请求失败，返回TDError实例 |
-
-
-|TDRewardVideo|描述|
-|---|---|
-|boolean isReady()| 判断RewardVideo是否可播放 |
-|void show()| 展示RewardVideo |
-|void setEventListener(TDRewardVideoEventListener eventListener)| 设置广告事件监听 |
-|double getBidPrice() | 获取广告价格 |
-
-**注意**：RewardVideo涉及视频素材加载，耗时较长，为了保证展示效果，建议提前对广告对象进行加载！！
+	TDRewardVideoAd rewardVideoAd = new TDRewardVideoAd("REWARDVIDEO_PLACEMENT_ID", tDRewardVideoConfig);
 
 #### 3、设置事件监听
 
-	tdRewardVideo.setEventListener(new TDRewardVideoEventListener() {
+	rewardVideoAd.setListener(new TDRewardVideoAdListener() {
+		@Override
+		public void onAdLoaded(@NonNull TDRewardVideo tdRewardVideo) {
+			// 请求成功
+		}
+
+		@Override
+		public void onError(@NonNull TDError tdError) {
+			// 请求失败
+		}
+
 		@Override
         public void onAdShowedFail(@NonNull TDError error) {
 			//广告展示失败
@@ -346,8 +319,10 @@
 |String getItemName()| 奖励名称 |
 |String getItemNumber()| 奖励数量 |
 
-|TDRewardVideoEventListener|描述|
+|TDRewardVideoAdListener|描述|
 |---|---|
+|void onAdLoaded(TDRewardVideo tdRewardVideo)| 广告请求成功，返回TDRewardVideo实例 |
+|void onError(TDError tdError)| 广告请求失败，返回TDError实例 |
 |void onAdShowedFail(TDError error)| 广告展示失败回调 |
 |void onRewardedSuccess(TDRewardItem rewardItem)| 广告激励成功回调 |
 |void onRewardedFail()| 广告激励失败回调 |
@@ -355,10 +330,25 @@
 |void onAdDismissed()| 广告关闭回调，用户点击关闭按钮时触发 |
 |void onAdShowed()| 广告展示回调，广告有效展示时触发 |
 
-#### 4、展示广告
+|TDRewardVideo|描述|
+|---|---|
+|double getBidPrice() | 获取广告价格 |
 
-	if (tdRewardVideo.isReady()) {
-		tdRewardVideo.show();
+|TDRewardVideoAd|描述|
+|---|---|
+|boolean isReady()| 判断RewardVideo是否可播放 |
+|void show()| 展示RewardVideo |
+
+**注意**：RewardVideo涉及视频素材加载，耗时较长，为了保证展示效果，建议提前对广告对象进行加载！！
+
+#### 4、请求广告
+
+	rewardVideoAd.load();
+
+#### 5、展示广告
+
+	if (rewardVideoAd.isReady()) {
+		rewardVideoAd.show();
 	}
 
 ## Interstitial
@@ -376,41 +366,23 @@
 |---|---|
 |void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为3s，默认为8秒 |
 
+#### 2、创建TDInterstitialAd实例
 
-#### 2、请求广告
-
-	TDInterstitial.load("INTER_PLACEMENT_ID", tDInterstitialConfig, new TDInterstitialLoadListener() {
-		@Override
-		public void onAdLoaded(@NonNull TDInterstitial tDInterstitial) {
-			// 请求成功
-			this.tDInterstitial = tDInterstitial
-		}
-
-        @Override
-		public void onError(@NonNull TDError tdError) {
-			// 请求失败
-		}
-	});
-
-
-|TDInterstitialLoadListener|描述|
-|---|---|
-|void onAdLoaded(TDInterstitial tDInterstitial)| 广告请求成功，返回TDInterstitial实例 |
-|void onError(TDError tdError)| 广告请求失败，返回TDError实例 |
-
-
-|TDInterstitial|描述|
-|---|---|
-|boolean isReady()| 判断Interstitial是否可播放 |
-|void show()| 展示Interstitial |
-|void setEventListener(TDInterstitialEventListener eventListener)| 设置广告事件监听 |
-|double getBidPrice() | 获取广告价格 |
-
-**注意**：Interstitial涉及视频素材加载，耗时较长，为了保证展示效果，建议提前对广告对象进行加载！！
+	TDInterstitialAd interstitialAd = new TDInterstitialAd("INTER_PLACEMENT_ID", tDInterstitialConfig);
 
 #### 3、设置事件监听
 
-	tDInterstitial.setEventListener(new TDInterstitialLoadListener() {
+	interstitialAd.setListener(new TDInterstitialAdListener() {
+		@Override
+		public void onAdLoaded(@NonNull TDInterstitial tDInterstitial) {
+			// 请求成功
+		}
+
+		@Override
+		public void onError(@NonNull TDError tdError) {
+			// 请求失败
+		}
+
 		@Override
         public void onAdShowedFail(@NonNull TDError error) {
 			//广告展示失败
@@ -432,17 +404,34 @@
 		}
 	});
 
-|TDInterstitialLoadListener|描述|
+|TDInterstitialAdListener|描述|
 |---|---|
+|void onAdLoaded(TDInterstitial tDInterstitial)| 广告请求成功，返回TDInterstitial实例 |
+|void onError(TDError tdError)| 广告请求失败，返回TDError实例 |
 |void onAdShowedFail(TDError error)| 广告展示失败回调 |
 |void onAdClicked()| 广告点击回调，用户点击热区时触发 |
 |void onAdDismissed()| 广告关闭回调，用户点击关闭按钮时触发 |
 |void onAdShowed()| 广告展示回调，广告有效展示时触发 |
 
-#### 4、展示广告
+|TDInterstitial|描述|
+|---|---|
+|double getBidPrice() | 获取广告价格 |
 
-	if (tDInterstitial.isReady()) {
-		tDInterstitial.show();
+|TDInterstitialAd|描述|
+|---|---|
+|boolean isReady()| 判断Interstitial是否可播放 |
+|void show()| 展示Interstitial |
+
+**注意**：Interstitial涉及视频素材加载，耗时较长，为了保证展示效果，建议提前对广告对象进行加载！！
+
+#### 4、请求广告
+
+	interstitialAd.load();
+
+#### 5、展示广告
+
+	if (interstitialAd.isReady()) {
+		interstitialAd.show();
 	}
 
 ## Native
@@ -464,44 +453,26 @@
 |---|---|
 |void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为3s |
 
+#### 2、创建TDNativeAd实例
 
-#### 2、请求广告
-
-	TDNative.load("NATIVE_PLACEMENT_ID", tdNativeConfig, new TDNativeLoadListener() {
-		@Override
-		public void onAdLoaded(@NonNull TDNative tdNative) {
-			// 请求成功
-			this.tdNative = tdNative
-		}
-
-        @Override
-		public void onError(@NonNull TDError tdError) {
-			// 请求失败
-		}
-	});
-
-|TDNativeLoadListener|描述|
-|---|---|
-|void onAdLoaded(TDNative tdNative)| 广告请求成功，返回TDNative实例 |
-|void onError(TDError tdError)| 广告请求失败，返回TDError实例 |
-
-|TDNative|描述|
-|---|---|
-|boolean bindViewsForInteraction(ViewGroup container, List<View> creativeViews, View dislikeView) | 自渲染Native绑定交互事件，需要在主线程调用, 返回true表示绑定成功，返回false表示绑定失败 |
-|void renderForTemplate(Context context) | 渲染模板Native |
-|string getIcon() | 获取Icon Url |
-|string getTitle() | 获取Title |
-|string getDescription() | 获取Description |
-|double getRating() | 获取Rating |
-|string getCTAText(): String | 获取CTA按钮文字 |
-|View getAdLogoView(context: Context) | 获取BrainX Logo View |
-|View getMediaView(context: Context) | 获取Media View |
-|void setEventListener(TDNativeEventListener eventListener)| 设置广告事件监听 |
-|double getBidPrice() | 获取广告价格 |
+	TDNativeAd nativeAd = new TDNativeAd("NATIVE_PLACEMENT_ID", tdNativeConfig);
 
 #### 3、设置事件监听
 
-	tdNative.setEventListener(new TDNativeEventListener() {
+	nativeAd.setListener(new TDNativeAdListener() {
+		@Override
+		public void onAdLoaded(@NonNull TDNative tdNative) {
+			// 请求成功，模板渲染需要调用renderForTemplate
+			if (tdNativeConfig.getNativeType() == TDNativeConfig.NativeType.TEMPLATE_RENDERING) {
+				nativeAd.renderForTemplate(context);
+			}
+		}
+
+		@Override
+		public void onError(@NonNull TDError tdError) {
+			// 请求失败
+		}
+
 		@Override
 		public void onAdClicked() {
 			// 广告点击
@@ -518,30 +489,55 @@
 		}
 
 		@Override
-		public void onRenderFail() {
+		public void onRenderFail(TDError error) {
 			// 模板Native渲染失败
 		}
 
 		@Override
 		public void onRenderSuccess(TDNativeView nativeView) {
 			// 模板Native渲染成功
+			container.addView(nativeView);
 		}
 	});
 
-|TDNativeEventListener|描述|
+|TDNativeAdListener|描述|
 |---|---|
+|void onAdLoaded(TDNative tdNative)| 广告请求成功，返回TDNative实例 |
+|void onError(TDError tdError)| 广告请求失败，返回TDError实例 |
 |void onAdClicked()| 广告点击回调，用户点击热区时触发 |
 |void onAdDismissed()| 广告关闭回调，用户点击关闭按钮时触发 |
 |void onAdShowed()| 广告展示回调，广告有效展示时触发 |
-|void onRenderFail()| 模板Native渲染失败 |
+|void onRenderFail(TDError error)| 模板Native渲染失败 |
 |void onRenderSuccess(TDNativeView view)| 模板Native渲染成功 |
 
-#### 4、渲染广告
+|TDNative|描述|
+|---|---|
+|string getIcon() | 获取Icon Url |
+|string getTitle() | 获取Title |
+|string getDescription() | 获取Description |
+|double getRating() | 获取Rating |
+|string getCTAText(): String | 获取CTA按钮文字 |
+|View getAdLogoView(context: Context) | 获取BrainX Logo View |
+|View getMediaView(context: Context) | 获取Media View |
+|double getBidPrice() | 获取广告价格 |
+
+|TDNativeAd|描述|
+|---|---|
+|boolean bindViewsForInteraction(ViewGroup container, List<View> creativeViews, View dislikeView) | 自渲染Native绑定交互事件，需要在主线程调用, 返回true表示绑定成功，返回false表示绑定失败 |
+|void renderForTemplate(Context context) | 渲染模板Native |
+|void destroy() | 销毁广告，回收广告资源 |
+
+#### 4、请求广告
+
+	nativeAd.load();
+
+#### 5、渲染广告
 ~~~
 //模板渲染
-tdNative.renderForTemplate(NativeActivity.this);
+// 在onAdLoaded回调中调用
+nativeAd.renderForTemplate(context);
 ~~~
-	
+
 	//自渲染
 	ViewGroup nativeView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.native_template, null, false);
 	ArrayList<View> creativeViews = new ArrayList<>();
@@ -592,19 +588,19 @@ tdNative.renderForTemplate(NativeActivity.this);
 
 **注意**： TDNativeConfig传入的NativeType代表了Native的类型：  
 
-- 当传入TEMPLATE_RENDERING时，代表此Native为模板渲染，直接调用renderForTemplate(Context context)以渲染模板Native。
+- 当传入TEMPLATE_RENDERING时，代表此Native为模板渲染，在onAdLoaded回调中调用renderForTemplate(Context context)以渲染模板Native。
 - 当传入SELF_RENDERING时，需要自己编写native view，并通过TDNative对象获取素材并自行渲染。并调用bindViewsForInteraction(ViewGroup container, List<View> creativeViews, View dislikeView)接口来绑定交互事件以及监听。container表示native view的根容器，creativeViews代表所有素材View，dislikeView代表关闭按钮。 **所有creativeView以及dislikeView都必须位于container内，MediaView以及LogoView必须被添加到container中，并且被放入creativeViews的List中！！**
 
-#### 5、展示广告
+#### 6、展示广告
 
 	container.addView(nativeView)
 
 将广告View添加到目标container当中去展示。   
 **注意：**Native不能被遮挡超过 **1/3** ，否则将 **无法** 正常计算展示。
 
-#### 6、销毁广告
+#### 7、销毁广告
 
-	tdNative.destroy()
+	nativeAd.destroy()
 
 在页面销毁或者native不再需要展示时调用以回收资源。
 
@@ -618,8 +614,8 @@ BrainX会收集设备信息、GAID并上报这些数据，用于确定用户ID�
 
 |平台名称|支持广告| Network Adapter 版本 | 依赖                                                          |
 |---|---|--------------------|-------------------------------------------------------------|
-|TradPlus|Splash、Banner、RewardVideo、Inter| 1002               | implementation 'tech.brainx.sdk:network-tradplus:1.0.0.2'   |
-|Topon|Splash、Banner、RewardVideo、Inter| 1001               | implementation 'tech.brainx.sdk:network-topon:1.0.0.1'      |
-|IronSource|Banner、RewardVideo、Inter| 1001               | implementation 'tech.brainx.sdk:network-ironsource:1.0.0.1' |
-|Max|Banner、RewardVideo、Inter| 1001               | implementation 'tech.brainx.sdk:network-max:1.0.0.1'        |
-|Admob|Banner、RewardVideo、Inter| 1001               | implementation 'tech.brainx.sdk:network-admob:1.0.0.1'      |
+|TradPlus|Splash、Banner、RewardVideo、Inter| 1100               | implementation 'tech.brainx.sdk:network-tradplus:1.1.0.0'   |
+|Topon|Splash、Banner、RewardVideo、Inter| 1100               | implementation 'tech.brainx.sdk:network-topon:1.1.0.0'      |
+|IronSource|Banner、RewardVideo、Inter| 1100               | implementation 'tech.brainx.sdk:network-ironsource:1.1.0.0' |
+|Max|Banner、RewardVideo、Inter| 1100               | implementation 'tech.brainx.sdk:network-max:1.1.0.0'        |
+|Admob|Banner、RewardVideo、Inter| 1100               | implementation 'tech.brainx.sdk:network-admob:1.1.0.0'      |
