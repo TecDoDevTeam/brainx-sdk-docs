@@ -29,7 +29,6 @@
 ## 接入方式
 
 ### 添加SDK依赖库
-![Maven Central](https://img.shields.io/maven-central/v/tech.brainx.sdk/brainxsdk.svg?label=Maven%20Central)
 	
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
 	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.1.0.0'
