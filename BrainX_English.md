@@ -3,7 +3,7 @@
 ### Update Log
 
 | Date       | Version | Log                                                               |
-| ---------- | ------- | ----------------------------------------------------------------- |
+|------------|---------|-------------------------------------------------------------------|
 | 2024-07-24 | 1.0.0.1 | 1、Support for Banner and Splash.                                  |
 | 2024-08-30 | 2.0.0.1 | 1、Support for RewardVideo and Interstitial.                       |
 | 2024-09-19 | 2.0.0.2 | 1、Display optimisation, known issues fixed.                       |
@@ -14,6 +14,7 @@
 | 2025-04-15 | 2.0.1.2 | 1、Banner interface optimization.                                  |
 | 2025-06-05 | 2.0.1.3 | 1、Fill rate optimisation, known issues fixed.                     |
 | 2025-06-17 | 2.1.0.0 | 1、Adjustment of integration approach, known issues fixed.         |
+| 2025-06-18 | 2.1.0.1 | 1、Known issues fixed.                                             |
 
 ## Features
 
@@ -30,7 +31,7 @@
 ### Add SDK Implementation
 
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-    //For example: implementation 'tech.brainx.sdk:brainxsdk:2.1.0.0'
+    //For example: implementation 'tech.brainx.sdk:brainxsdk:2.1.0.1'
 
 ### Add SDK-dependent permission declaration
 
@@ -613,8 +614,8 @@ BrainX will collect device information and GAID and report this data to determin
 
 | Mediation  | Ad type                         | Network Adapter version | Implementation                                              |
 | ---------- | ------------------------------- | ----------------------- | ----------------------------------------------------------- |
-| TradPlus   | Splash、Banner、RewardVideo、Inter | 1100                    | implementation 'tech.brainx.sdk:network-tradplus:1.1.0.0'   |
-| Topon      | Splash、Banner、RewardVideo、Inter | 1100                    | implementation 'tech.brainx.sdk:network-topon:1.1.0.0'      |
-| IronSource | Banner、RewardVideo、Inter        | 1100                    | implementation 'tech.brainx.sdk:network-ironsource:1.1.0.0' |
-| Max        | Banner、RewardVideo、Inter        | 1100                    | implementation 'tech.brainx.sdk:network-max:1.1.0.0'        |
-| Admob      | Banner、RewardVideo、Inter        | 1100                    | implementation 'tech.brainx.sdk:network-admob:1.1.0.0'      |
+| TradPlus   | Splash、Banner、RewardVideo、Inter | 1101                    | implementation 'tech.brainx.sdk:network-tradplus:1.1.0.1'   |
+| Topon      | Splash、Banner、RewardVideo、Inter | 1101                    | implementation 'tech.brainx.sdk:network-topon:1.1.0.1'      |
+| IronSource | Banner、RewardVideo、Inter        | 1101                    | implementation 'tech.brainx.sdk:network-ironsource:1.1.0.1' |
+| Max        | Banner、RewardVideo、Inter        | 1101                    | implementation 'tech.brainx.sdk:network-max:1.1.0.1'        |
+| Admob      | Banner、RewardVideo、Inter        | 1101                    | implementation 'tech.brainx.sdk:network-admob:1.1.0.1'      |

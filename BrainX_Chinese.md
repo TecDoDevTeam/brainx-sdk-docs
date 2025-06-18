@@ -13,7 +13,8 @@
 | 2024-11-26 | 2.0.1.1 | 1、优化填充效果，修复已知问题。              |
 | 2025-04-15 | 2.0.1.2 | 1、Banner接入接口优化。               |
 | 2025-06-05 | 2.0.1.3 | 1、优化填充效果，已知问题修复。              |
-| 2025-06-17  | 2.1.0.0 | 1、调整接入方式，已知问题修复。              |
+| 2025-06-17 | 2.1.0.0 | 1、调整接入方式，已知问题修复。              |
+| 2025-06-18 | 2.1.0.1 | 1、已知问题修复。              |
 
 ## 功能描述
 
@@ -31,7 +32,7 @@
 ### 添加SDK依赖库
 	
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.1.0.0'
+	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.1.0.1'
 
 ### 在AndroidManifest.xml中添加SDK依赖的权限申明
 
@@ -613,8 +614,8 @@ BrainX会收集设备信息、GAID并上报这些数据，用于确定用户ID�
 
 |平台名称|支持广告| Network Adapter 版本 | 依赖                                                          |
 |---|---|--------------------|-------------------------------------------------------------|
-|TradPlus|Splash、Banner、RewardVideo、Inter| 1100               | implementation 'tech.brainx.sdk:network-tradplus:1.1.0.0'   |
-|Topon|Splash、Banner、RewardVideo、Inter| 1100               | implementation 'tech.brainx.sdk:network-topon:1.1.0.0'      |
-|IronSource|Banner、RewardVideo、Inter| 1100               | implementation 'tech.brainx.sdk:network-ironsource:1.1.0.0' |
-|Max|Banner、RewardVideo、Inter| 1100               | implementation 'tech.brainx.sdk:network-max:1.1.0.0'        |
-|Admob|Banner、RewardVideo、Inter| 1100               | implementation 'tech.brainx.sdk:network-admob:1.1.0.0'      |
+|TradPlus|Splash、Banner、RewardVideo、Inter| 1101               | implementation 'tech.brainx.sdk:network-tradplus:1.1.0.1'   |
+|Topon|Splash、Banner、RewardVideo、Inter| 1101               | implementation 'tech.brainx.sdk:network-topon:1.1.0.1'      |
+|IronSource|Banner、RewardVideo、Inter| 1101               | implementation 'tech.brainx.sdk:network-ironsource:1.1.0.1' |
+|Max|Banner、RewardVideo、Inter| 1101               | implementation 'tech.brainx.sdk:network-max:1.1.0.1'        |
+|Admob|Banner、RewardVideo、Inter| 1101               | implementation 'tech.brainx.sdk:network-admob:1.1.0.1'      |
