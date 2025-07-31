@@ -14,17 +14,18 @@
 | 2025-04-15 | 2.0.1.2 | 1、Banner接入接口优化。               |
 | 2025-06-05 | 2.0.1.3 | 1、优化填充效果，已知问题修复。              |
 | 2025-06-17 | 2.1.0.0 | 1、调整接入方式，已知问题修复。              |
-| 2025-06-18 | 2.1.0.1 | 1、已知问题修复。              |
+| 2025-06-18 | 2.1.0.1 | 1、已知问题修复。                     |
+| 2025-07-31 | 2.1.0.2 | 1、Banner&Native 支持视频素材广告。     |
 
 ## 功能描述
 
-| Ad Type          | Material Support      | Display Mode        | Description                                                                 |
-| ---------------- | --------------------- | ------------------- | --------------------------------------------------------------------------- |
-| **Splash**       | Image                 | Embedded Display    | Display at app launch, requires >3/4 screen coverage                        |
-| **Banner**       | Image                 | Embedded Display    | Can be embedded anywhere in the page, supports multiple size specifications |
-| **RewardVideo**  | Video                 | Full-Screen Display | Full-screen video playback, users receive rewards after completion          |
-| **Interstitial** | Image + Text or Video | Full-Screen Display | Full-screen display, supports image, video combinations                     |
-| **Native**       | Image + Text          | Embedded Display    | Fully integrates into app interface, supports template and custom rendering |
+| 广告类型          | 素材支持      | 展示模式        | 描述                        |
+| ---------------- |-----------------------| ------------------- |---------------------------|
+| **Splash**       | 图片                 | 嵌入式展示    | 应用启动时展示，需要占屏幕3/4以上面积      |
+| **Banner**       | 图片或视频        | 嵌入式展示    | 可嵌入页面任意位置，支持多种尺寸规格        |
+| **RewardVideo**  | 视频                 | 全屏展示 | 全屏视频播放，用户完成观看后获得奖励        |
+| **Interstitial** | 图片+文字或视频 | 全屏展示 | 全屏展示，支持图片、视频组合            |
+| **Native**       | 图片/视频+文字    | 嵌入式展示    | 完全融入应用界面，支持模板和自定义渲染       |
 
 
 ## 接入方式
@@ -32,7 +33,7 @@
 ### 添加SDK依赖库
 	
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.1.0.1'
+	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.1.0.2'
 
 ### 在AndroidManifest.xml中添加SDK依赖的权限申明
 
@@ -526,6 +527,31 @@
 |boolean bindViewsForInteraction(ViewGroup container, List<View> creativeViews, View dislikeView) | 自渲染Native绑定交互事件，需要在主线程调用, 返回true表示绑定成功，返回false表示绑定失败 |
 |void renderForTemplate(Context context) | 渲染模板Native |
 |void destroy() | 销毁广告，回收广告资源 |
+
+**注意**：MediaContent是从TDMediaView中获取的，用于控制视频内容的播放。
+
+|MediaContent|描述|
+|---|---|
+|VideoController getVideoController() | 获取视频控制器 |
+|float getAspectRatio() | 获取素材内容的宽高比（宽度/高度） |
+|long getDuration() | 获取视频时长（毫秒），仅在有视频内容时有效，否则返回0 |
+|boolean hasVideoContent() | 检查是否包含视频内容 |
+
+|VideoController|描述|
+|---|---|
+|boolean isVideoPlaying | 视频是否正在播放 |
+|boolean isVideoEnd | 视频是否播放结束 |
+|boolean isVideoPaused | 视频是否暂停 |
+|boolean isVideoMuted | 视频是否静音 |
+|void replay() | 播放视频（未播放过）或重播（已播放完） |
+|void mute() | 静音视频 |
+|void unmute() | 取消静音 |
+|void pause(boolean pausedByUser) | 暂停视频播放 |
+|void resume() | 恢复视频播放 |
+|void togglePlayState(boolean byUser) | 切换播放状态 |
+|void toggleMuteState() | 切换静音状态 |
+|boolean hasVideoContent() | 检查是否包含视频内容 |
+|void setVideoEventListener(VideoListener listener) | 设置视频事件监听器 |
 
 #### 4、请求广告
 
