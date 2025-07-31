@@ -15,23 +15,24 @@
 | 2025-06-05 | 2.0.1.3 | 1、Fill rate optimisation, known issues fixed.                     |
 | 2025-06-17 | 2.1.0.0 | 1、Adjustment of integration approach, known issues fixed.         |
 | 2025-06-18 | 2.1.0.1 | 1、Known issues fixed.                                             |
+| 2025-07-31 | 2.1.0.2 | 1、Banner&Native support for video creatives.                   |
 
 ## Features
 
 | Ad Type          | Material Support      | Display Mode        | Description                                                                 |
 | ---------------- | --------------------- | ------------------- | --------------------------------------------------------------------------- |
 | **Splash**       | Image                 | Embedded Display    | Display at app launch, requires >3/4 screen coverage                        |
-| **Banner**       | Image                 | Embedded Display    | Can be embedded anywhere in the page, supports multiple size specifications |
+| **Banner**       | Image or Video        | Embedded Display    | Can be embedded anywhere in the page, supports multiple size specifications |
 | **RewardVideo**  | Video                 | Full-Screen Display | Full-screen video playback, users receive rewards after completion          |
 | **Interstitial** | Image + Text or Video | Full-Screen Display | Full-screen display, supports image, video combinations                     |
-| **Native**       | Image + Text          | Embedded Display    | Fully integrates into app interface, supports template and custom rendering |
+| **Native**       | Image/Video + Text    | Embedded Display    | Fully integrates into app interface, supports template and custom rendering |
 
 ## Integration
 
 ### Add SDK Implementation
 
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-    //For example: implementation 'tech.brainx.sdk:brainxsdk:2.1.0.1'
+    //For example: implementation 'tech.brainx.sdk:brainxsdk:2.1.0.2'
 
 ### Add SDK-dependent permission declaration
 
@@ -523,6 +524,31 @@ Call this method to reclaim resources when the page is destroyed or the banner n
 | boolean bindViewsForInteraction(ViewGroup container, List<View> creativeViews, View dislikeView) | Bind interaction events for Self-rendering Native, it needs to be called in the main thread. Returning true means the binding is successful, and returning false means the binding fails |
 | void renderForTemplate(Context context) | Render template rendering Native |
 | void destroy() | Destroy the Ad and recycle resources |
+
+**Note**: MediaContent is obtained from TDMediaView and is used to control video content playback.
+
+| MediaContent | Description |
+| ------------ | ----------- |
+| VideoController getVideoController() | Get video controller |
+| float getAspectRatio() | Get aspect ratio of media content (width/height) |
+| long getDuration() | Get video duration in milliseconds, only valid when video content exists, otherwise returns 0 |
+| boolean hasVideoContent() | Check if video content is included |
+
+| VideoController | Description |
+| --------------- | ----------- |
+| boolean isVideoPlaying | Whether video is playing |
+| boolean isVideoEnd | Whether video playback has ended |
+| boolean isVideoPaused | Whether video is paused |
+| boolean isVideoMuted | Whether video is muted |
+| void replay() | Play video (if not played before) or replay (if already finished) |
+| void mute() | Mute video |
+| void unmute() | Unmute video |
+| void pause(boolean pausedByUser) | Pause video playback |
+| void resume() | Resume video playback |
+| void togglePlayState(boolean byUser) | Toggle play state |
+| void toggleMuteState() | Toggle mute state |
+| boolean hasVideoContent() | Check if video content is included |
+| void setVideoEventListener(VideoListener listener) | Set video event listener |
 
 #### 4、Load the Ad
 
