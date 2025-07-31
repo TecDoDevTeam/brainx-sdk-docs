@@ -103,11 +103,11 @@
 #### 1、创建TDSplashConfig对象
 	
 	TDSplashConfig tdSplashConfig = new TDSplashConfig();
-	tdSplashConfig.setAdTimeOut(5);
+	tdSplashConfig.setAdTimeOut(8);
 
-|TDSplashConfig|描述|
-|---|---|
-|void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为3s，默认为3秒 |
+|TDSplashConfig| 描述                          |
+|---|-----------------------------|
+|void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为8s，默认为8秒 |
 
 #### 2、创建TDSplashAd实例
 
@@ -184,11 +184,11 @@
 #### 1、创建TDBannerConfig对象
 
 	TDBannerConfig tdBannerConfig = new TDBannerConfig();
-	tdBannerConfig.setAdTimeOut(5);
+	tdBannerConfig.setAdTimeOut(8);
 
 |TDBannerConfig|描述|
 |---|---|
-|void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为3s，默认为3秒 |
+|void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为8s，默认为8秒 |
 
 #### 2、创建TDBannerAdView实例
 
@@ -265,7 +265,7 @@
 
 |TDRewardVideoConfig|描述|
 |---|---|
-|void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为3s，默认为8秒 |
+|void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为8s，默认为8秒 |
 
 #### 2、创建TDRewardVideoAd实例
 
@@ -365,7 +365,7 @@
 
 |TDInterstitialConfig|描述|
 |---|---|
-|void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为3s，默认为8秒 |
+|void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为8s，默认为8秒 |
 
 #### 2、创建TDInterstitialAd实例
 
@@ -452,7 +452,7 @@
 
 |TDNativeConfig|描述|
 |---|---|
-|void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为3s |
+|void setAdTimeOut(int seconds)| 设置广告请求超时时长，单位为秒，最少为8s |
 
 #### 2、创建TDNativeAd实例
 
