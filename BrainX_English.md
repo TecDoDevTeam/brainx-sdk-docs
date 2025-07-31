@@ -100,11 +100,11 @@ Related privacy agreements：[GDPR](https://en.wikipedia.org/wiki/General_Data_P
 #### 1. Create object of TDSplashConfig
 
     TDSplashConfig tdSplashConfig = new TDSplashConfig();
-    tdSplashConfig.setAdTimeOut(5);
+    tdSplashConfig.setAdTimeOut(8);
 
 | TDSplashConfig                 | Description                                    |
 | ------------------------------ | ---------------------------------------------- |
-| void setAdTimeOut(int seconds) | Set the ad request timeout, at least 3 seconds |
+| void setAdTimeOut(int seconds) | Set the ad request timeout, at least 8 seconds |
 
 #### 2. Create TDSplashAd instance
 
@@ -181,11 +181,11 @@ Call the load() method to request ad, and show the ad in the container in onAdLo
 #### 1. Create object of TDBannerConfig
 
     TDBannerConfig tdBannerConfig = new TDBannerConfig();
-    tdBannerConfig.setAdTimeOut(5);
+    tdBannerConfig.setAdTimeOut(8);
 
 | TDBannerConfig                 | Description                                    |
 | ------------------------------ | ---------------------------------------------- |
-| void setAdTimeOut(int seconds) | Set the ad request timeout, at least 3 seconds |
+| void setAdTimeOut(int seconds) | Set the ad request timeout, at least 8 seconds |
 
 #### 2. Create TDBannerAdView instance
 
@@ -263,7 +263,7 @@ Call this method to reclaim resources when the page is destroyed or the banner n
 
 | TDRewardVideoConfig            | Description                                                                        |
 | ------------------------------ | ---------------------------------------------------------------------------------- |
-| void setAdTimeOut(int seconds) | Set the ad request timeout in seconds, the minimum is 3s, the default is 8 seconds |
+| void setAdTimeOut(int seconds) | Set the ad request timeout in seconds, the minimum is 8s, the default is 8 seconds |
 
 #### 2、Create TDRewardVideoAd instance
 
@@ -363,7 +363,7 @@ Call this method to reclaim resources when the page is destroyed or the banner n
 
 | TDInterstitialConfig           | Description                                                                        |
 | ------------------------------ | ---------------------------------------------------------------------------------- |
-| void setAdTimeOut(int seconds) | Set the ad request timeout in seconds, the minimum is 3s, the default is 8 seconds |
+| void setAdTimeOut(int seconds) | Set the ad request timeout in seconds, the minimum is 8s, the default is 8 seconds |
 
 #### 2、Create TDInterstitialAd instance
 
@@ -449,7 +449,7 @@ Call this method to reclaim resources when the page is destroyed or the banner n
 
 | TDNativeConfig                 | Description                                    |
 | ------------------------------ | ---------------------------------------------- |
-| void setAdTimeOut(int seconds) | Set the ad request timeout, at least 3 seconds |
+| void setAdTimeOut(int seconds) | Set the ad request timeout, at least 8 seconds |
 
 #### 2、Create TDNativeAd instance
 
