@@ -16,6 +16,7 @@
 | 2025-06-17 | 2.1.0.0 | 1、Adjustment of integration approach, known issues fixed.         |
 | 2025-06-18 | 2.1.0.1 | 1、Known issues fixed.                                             |
 | 2025-07-31 | 2.1.0.2 | 1、Banner&Native support for video creatives.                   |
+| 2025-08-05 | 2.1.0.3 | 1、Fixed layout issues for self-rendered Native ads in certain scenarios. |
 
 ## Features
 
@@ -32,7 +33,7 @@
 ### Add SDK Implementation
 
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-    //For example: implementation 'tech.brainx.sdk:brainxsdk:2.1.0.2'
+    //For example: implementation 'tech.brainx.sdk:brainxsdk:2.1.0.3'
 
 ### Add SDK-dependent permission declaration
 

@@ -16,6 +16,7 @@
 | 2025-06-17 | 2.1.0.0 | 1、调整接入方式，已知问题修复。              |
 | 2025-06-18 | 2.1.0.1 | 1、已知问题修复。                     |
 | 2025-07-31 | 2.1.0.2 | 1、Banner&Native 支持视频素材广告。     |
+| 2025-08-05 | 2.1.0.3 | 1、修复自渲染的 Native 广告在某些场景下的布局问题。 |
 
 ## 功能描述
 
@@ -33,7 +34,7 @@
 ### 添加SDK依赖库
 	
     implementation 'tech.brainx.sdk:brainxsdk:$VERSION'
-	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.1.0.2'
+	//例如 implementation 'tech.brainx.sdk:brainxsdk:2.1.0.3'
 
 ### 在AndroidManifest.xml中添加SDK依赖的权限申明
 
